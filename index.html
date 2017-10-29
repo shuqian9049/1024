@@ -4,42 +4,25 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        #mei{
-            width: 370px;
-            border: solid 1px pink;
-            margin-top: 5px;
+        a{
+            margin-left: 10px;
         }
     </style>
-    <script type="text/javascript" src="public/javascripts/jquery-3.1.1.js"></script>
+    <script src="jquery-3.1.1.js"></script>
     <script type="text/javascript">
-       $(function () {
-          $("#sq").click(function () {
-              $.ajax({
-                  url:'http://localhost:3000',
-                  type:'post',
-                  data:{title:$('#tt').val(),name:$("#ss").val()},
-                  success:function (data) {
-                      console.log(data);
-                      var arr='';
-                      for(i in data){
-                          var err=data[i];
-                          for(i in err){
-//                              arr+=err[i].name+'<br>'
-                              arr+='<h5>'+err[i].title+'</h5>'+'<p>'+err[i].name+'</p>'
-
-                          }
-                      }
-                      $('#mei').html(arr)
-                  }
-              })
-          })
-       })
+      $.ajax({
+          url:'http://localhost:3000/item/list',
+          type:'get',
+          dataType:"json",
+          success:function (e) {
+             for(var i in e) {
+                 $('body').append("<a href='detail.html?id="+e[i].id+"'>"+e[i].name+"</a>")
+             }
+          }
+      })
     </script>
 </head>
 <body>
-<input type="text" id="tt">
-<input type="text" id="ss">
-<input type="submit" id="sq">
-<div id="mei"></div>
+
 </body>
 </html>
