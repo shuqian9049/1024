@@ -1,26 +1,22 @@
 var express = require('express');
 var router = express.Router();
 
-var mysql      = require('mysql');
-var connection = mysql.createPool({//创建链接地址
-    host     : 'localhost',//IP地址
-    user     : 'root',//用户名
-    password : '123456'//密码
-});
+var mysql=require('mysql');
+var pool=mysql.createPool({
+    host:'localhost',
+    user:'root',
+    password:'123456',
+    database:'baobei'
+})
 
 /* GET home page. */
-router.get('/list', function(req, res, next) {
-    connection.query('SELECT * FROM baobei.item', function(err, rows, fields) {//err报错rows形参
-        res.header('Access-Control-Allow-Origin','*')
+router.post('/v', function(req, res, next) {
+  var q=(req.body.id-1)*2;
+  console.log(q)
+  res.header('Access-Control-Allow-Origin','*')
+    pool.query(`SELECT * FROM list LIMIT ${q},2`,function (err,rows,fileds) {
         res.send(rows)
-    });
+    })
+});
 
-});
-router.post('/detail', function(req, res, next) {
-    var aa=req.body.a;
-    connection.query('SELECT * FROM baobei.item WHERE id='+aa, function(err, rows, fields) {//err报错rows形参
-        res.header('Access-Control-Allow-Origin','*')
-        res.send(rows)
-    });
-});
 module.exports = router;
